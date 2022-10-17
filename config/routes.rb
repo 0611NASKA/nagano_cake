@@ -4,6 +4,10 @@ Rails.application.routes.draw do
     registrations: "public/registrations",
     sessions: 'public/sessions'
   }
+  get 'my_page' => "public/customers#show"
+
+  resources :customers, only: [:edit, :update] do
+  end
 
   devise_for :admin, skip: [:registrations, :passwords] ,controllers: {
     sessions: "admin/sessions"
