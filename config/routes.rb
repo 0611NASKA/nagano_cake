@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   root to: 'public/homes#top'
 
   get "about"=>"public/homes#about"
+  get 'customers/edit' => "public/customers#edit"
+  patch 'customers' => "public/customers#update"
 
   devise_for :customers,skip: [:passwords], controllers: {
     registrations: "public/registrations",
@@ -11,8 +13,6 @@ Rails.application.routes.draw do
     resources :items, only: [:index, :show]
 
     get 'customers/my_page' => "customers#show"
-    get 'customers/edit' => "customers#edit"
-    patch 'customers' => "customers#update"
     get 'customers/unsubscribe' => "customers#unsubscribe"
     patch 'customers/withdraw' => "customers#withdraw"
 
