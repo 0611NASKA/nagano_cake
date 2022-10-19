@@ -17,7 +17,7 @@ class Admin::GenresController < ApplicationController
   end
 
   def edit
-  end 
+  end
 
   private
 
