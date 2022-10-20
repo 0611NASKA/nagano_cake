@@ -1,0 +1,61 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-8 col-lg-8 px-5 px-sm-0 mx-auto">
+      <h2 class="border-bottom">ショッピングカート</h2>
+      <% if @cart_items.present? %>
+      <div class="float-right">
+        <%= link_to "カートを空にする", cart_item_destroy_all_path, method: :delete, data: { confirm: "カートを空にしますか？" }, class: "btn btn-danger" %>
+      </div>
+      <table class="table table-striped table-bordered table-hover table-sm">
+        <thead>
+          <tr>
+            <th>商品名</th>
+            <th>単価（税込）</th>
+            <th>数量</th>
+            <th>小計</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @cart_items.each do |cart_item| %>
+            <tr>
+              <td><%= cart_item.item.name %></td>
+              <td><%= cart_item.item.add_tax_price %></td>
+              <td>
+                <% @cart_item = CartItem.find(cart_item.id) %>
+                <%= form_with model: @cart_item, url: cart_item_path(cart_item.id), method: :patch do |f| %>
+                  <div class="form-group">
+                    <%= f.hidden_field :amount, value: cart_item.amount %>
+                    <%= f.select :amount, *[1..10], value: cart_item.amount %>
+                    <%= f.submit "変更", class: "btn btn-primary" %>
+                  </div>
+                <% end %>
+              </td>
+              <td><%= cart_item.item.add_tax_price * cart_item.amount %></td>
+              <td><%= link_to "削除する", cart_item_path(cart_item.id), method: :delete, class: "btn btn-danger" %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <div class= "float-left">
+        <%= link_to "買い物を続ける", root_path, class: "btn btn-primary" %>
+      </div>
+      <div class="float-right">
+        <table class="table table-striped table-bordered table-hover table-sm">
+          <tr>
+            <th>合計金額</th>
+            <td><%= @total.round.to_s(:delimited)%></td>
+          </tr>
+        </table>
+      </div>
+      <div class="row">
+        <div class="col-md-5 col-md-offset-5">
+          <%= link_to "情報入力に進む", "#", class: "btn btn-success" %>
+        </div>
+      </div>
+      <% else %>
+        <p>カート内は空です</p>
+      <% end %>
+    </div>
+  </div>
+</div>
