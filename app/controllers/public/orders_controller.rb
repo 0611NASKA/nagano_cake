@@ -4,6 +4,7 @@ class Public::OrdersController < ApplicationController
   def new
     @order = Order.new
     @addresses = Address.where(customer_id: current_customer.id)
+    @customer = current_customer
   end
 
   def create
@@ -27,6 +28,28 @@ class Public::OrdersController < ApplicationController
   end
 
   def confirm
+    @order = Order.new(order_params)
+  if params[:order][:address_option] == "0"
+    @order.name = current_customer.full_name_a
+    @order.address = current_customer.address_display
+  elsif params[:order][:address_option] == "1"
+    if Address.exists?(name: params[:order][:address])
+      @order.name = Address.find(params[:order][:address]).full_name_a
+      @order.address = Address.find(params[:order][:address]).address_display
+    else
+      render :new
+    end
+  elsif params[:order][:address_option] == "2"
+    @address_new = current_customer.addresses.new(address_params)
+    if @address_new.save
+    else
+      render :new
+    end
+  else
+    redirect_to root_path
+  end
+  @cart_items = current_customer.cart_items.all
+  @total = @cart_items.inject(0) { |sum, item| sum + item.sum_of_price }
   end
 
   private

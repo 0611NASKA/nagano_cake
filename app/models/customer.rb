@@ -23,7 +23,11 @@ class Customer < ApplicationRecord
     self.last_name + self.first_name + "（" + self.last_name_kana + self.first_name_kana + "）"
   end
 
+  def full_name_a
+    self.last_name + self.first_name
+  end
+
   def address_display
-    '〒' + current_customer.postal_code + ' ' + current_customer.address + ' ' + current_customer.name
+    '〒' + self.postal_code + ' ' + self.address + ' ' + self.full_name_a
   end
 end
