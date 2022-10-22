@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-8 col-lg-8 px-5 px-sm-0 mx-auto">
+      <h2 class="border-bottom">注文情報入力</h2>
+      <%= form_with model: @order, url: orders_confirm_path, local: true do |f| %>
+        <h4 class="float-left">支払い方法</h4><br /><br />
+        <div class="form-group">
+          <%= f.radio_button :payment_method, Order.payment_methods.key(0) %>
+          <%= f.label :payment_method, Order.payment_methods_i18n[:credit_card] %><br>
+          <%= f.radio_button :payment_method, Order.payment_methods.key(1) %>
+          <%= f.label :payment_method, Order.payment_methods_i18n[:transfer] %>
+        </div>
+        <h4 class="float-left">お届け先</h4><br /><br />
+        <div class="form-group">
+
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

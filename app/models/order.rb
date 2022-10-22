@@ -3,8 +3,8 @@ class Order < ApplicationRecord
   has_many :order_details, dependent: :destroy
 
   enum payment_method: {
-    credit: 0,
-    bank: 1
+    credit_card: 0,
+    transfer: 1
   }
 
   enum status: {
