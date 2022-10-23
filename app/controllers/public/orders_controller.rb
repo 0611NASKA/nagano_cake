@@ -1,65 +1,83 @@
 class Public::OrdersController < ApplicationController
   before_action :authenticate_customer!
 
+  def index
+  end
+
+  def show
+  end
+
   def new
     @order = Order.new
-    @addresses = Address.where(customer_id: current_customer.id)
     @customer = current_customer
+    @addresses = current_customer.addresses
   end
 
   def create
-    cart_items = current_customer.cart_items.all
-    @order = current_customer.orders.new(order_params)
-    if @order.save
-      @cart_items.each do |cart|
-        order_item = OrderItem.new
-        order_item.item_id = cart.item_id
-        order_item.order_id = @order.id
-        order_item.order_quantity = cart.quantity
-        order_item.order_price = cart.item.price
-        order_item.save
+    @order = Order.new(order_params)
+    @order.customer_id = current_customer.id
+    if @order.save!
+      @cart_items = current_customer.cart_items
+      @cart_items.each do |cart_item|
+        order_detail = OrderDetail.new(order_id: @order.id)
+        order_detail.price = cart_item.item.price
+        order_detail.amount = cart_item.amount
+        order_detail.item_id = cart_item.item_id
+        order_detail.save!
       end
-      redirect_to 遷移したいページのパス
-      cart_items.destroy_all
+      @cart_items.destroy_all
+      redirect_to orders_complete_path
     else
-      @order = Order.new(order_params)
-      render :new
+      render "new"
     end
   end
 
   def confirm
+    @cart_items = current_customer.cart_items
     @order = Order.new(order_params)
-  if params[:order][:address_option] == "0"
-    @order.name = current_customer.full_name_a
-    @order.address = current_customer.address_display
-  elsif params[:order][:address_option] == "1"
-    if Address.exists?(name: params[:order][:address])
-      @order.name = Address.find(params[:order][:address]).full_name_a
-      @order.address = Address.find(params[:order][:address]).address_display
-    else
-      render :new
+    @order.customer_id = current_customer.id
+    @order.payment_method = params[:order][:payment_method]
+    @total_payment = current_customer.cart_items.cart_items_total_price(@cart_items)
+    @order.shipping_cost = 800
+
+    if params[:order][:address_option] == "0"
+      @order.postal_code = current_customer.postal_code
+      @order.address = current_customer.address
+      @order.name = current_customer.full_name_a
+      render 'confirm'
+    elsif params[:order][:address_option] == "1"
+      @address = Address.find(params[:order][:address_id])
+      @order.postal_code = @address.postal_code
+      @order.address = @address.address
+      @order.name = @address.name
+      render 'confirm'
+    elsif params[:order][:address_option] == "2"
+      @address = current_customer.addresses.new
+      @address.address = params[:order][:address]
+      @address.name = params[:order][:name]
+      @address.postal_code = params[:order][:postal_code]
+      @address.customer_id = current_customer.id
+      if @address.save
+      @order.postal_code = @address.postal_code
+      @order.name = @address.name
+      @order.address = @address.address
+      else
+       render 'new'
+      end
     end
-  elsif params[:order][:address_option] == "2"
-    @address_new = current_customer.addresses.new(address_params)
-    if @address_new.save
-    else
-      render :new
-    end
-  else
-    redirect_to root_path
   end
-  @cart_items = current_customer.cart_items.all
-  @total = @cart_items.inject(0) { |sum, item| sum + item.sum_of_price }
+
+  def complete
   end
 
   private
 
   def order_params
-    params.require(:order).permit(:posta_code,:address, :name, :shipping_cost,
+    params.require(:order).permit(:postal_code,:address, :name, :shipping_cost,
       :address, :total_payment, :payment_method, :status)
   end
 
   def address_params
-    params.require(:address).permit(:name, :postal_code, :address)
+    params.require(:address).permit(:customer_id, :name, :postal_code, :address)
   end
 end
