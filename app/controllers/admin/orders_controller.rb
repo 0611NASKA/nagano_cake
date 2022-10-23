@@ -15,13 +15,13 @@ class Admin::OrdersController < ApplicationController
     @order.update(order_params)
     @order_details = @order.order_details
 
-    if @order.status == "入金確認"
+    if @order.status = 1
       @order_details.each do |order_detail|
-        order_detail.making_status = "製作待ち"
+        order_detail.making_status = 1
         order_detail.save
       end
     end
-    redirect_to admin_order_path
+    redirect_to admin_order_path, notice: "注文ステータスを更新しました"
   end
 
   private
