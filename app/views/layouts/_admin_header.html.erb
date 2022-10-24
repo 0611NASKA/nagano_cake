@@ -28,4 +28,10 @@
       </div>
     </div>
   </nav>
+  <div class="search-form float-right">
+    <%= form_with url: admin_search_path, method: :get, local: true do |f| %>
+      <%= f.text_field :keyword, value: @keyword %>
+      <%= f.submit "検索" %>
+    <% end %>
+  </div>
 </header>
