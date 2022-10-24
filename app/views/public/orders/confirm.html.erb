@@ -26,7 +26,7 @@
         </tbody>
       </table>
     </div>
-    <%= form_with model: @order, url: orders_path, method: :post, local: true do |f| %>
+    <%= form_with model: @order, url: orders_path, method: :post, local: true, data: { confirm: "注文を確定しますか？" } do |f| %>
       <div class="col-xs-3">
         <table class="table table-striped table-bordered table-hover table-sm">
           <tbody>
@@ -72,7 +72,7 @@
     <%= link_to "情報入力へ戻る", new_order_path, class: "btn btn-primary" %>
   </div>
   <div class="text-center">
-    <%= f.submit "購入を確定する", class: "btn btn-success btn-lg text-center" %>
+    <%= f.submit "注文を確定する", class: "btn btn-success btn-lg text-center" %>
   </div>
 <% end %>
 </div>

@@ -1,5 +1,6 @@
 class Public::OrdersController < ApplicationController
   before_action :authenticate_customer!
+  before_action :correct_cart, except: [:complete]
 
   def index
   end
@@ -81,4 +82,12 @@ class Public::OrdersController < ApplicationController
   def address_params
     params.require(:address).permit(:customer_id, :name, :postal_code, :address)
   end
+
+  def correct_cart
+    @cart_items = current_customer.cart_items
+    if @cart_items.size == 0
+      redirect_to cart_items_path, notice: "カート内は空です"
+    end
+  end
+
 end
