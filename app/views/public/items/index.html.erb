@@ -1,6 +1,14 @@
 <div class="container">
   <div class="row">
+    <div class="col-md-3">
+      <%= render 'layouts/genre_sidebar', genres: @genres  %>
+    </div>
     <div class="col-sm-12 col-md-8 col-lg-5 px-5 px-sm-0 mx-auto">
+      <h1 class="border-bottom">
+        <% if params[:genre_id] %>
+          <%= @genre.name %>
+        <% end %>
+      </h1>
       <h2 class="border-bottom">商品一覧</h2>
       <% if @items.present? %>
         <table class="table table-striped table-bordered table-hover table-sm">
