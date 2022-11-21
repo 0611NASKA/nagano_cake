@@ -1,8 +1,8 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-12 col-md-8 col-lg-6 px-5 px-sm-0 mx-auto">
-      <h2 class="border-bottom">商品新規登録</h2>
-      <%= form_with model: @item, url: admin_items_path, method: :post, local:true do |f| %>
+      <h2 class="border-bottom">商品編集</h2>
+      <%= form_with model: @item, url: admin_item_path, method: :patch, local:true do |f| %>
         <%= render 'layouts/errors', obj: @item %>
         <div class="form-group">
           <%= f.label "商品画像" %>

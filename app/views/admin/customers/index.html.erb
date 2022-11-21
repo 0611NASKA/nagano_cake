@@ -10,6 +10,7 @@
               <th>氏名（フルネーム）</th>
               <th>メールアドレス</th>
               <th>ステータス</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -23,10 +24,12 @@
                 <% else %>
                   <td>退会済</td>
                 <% end %>
+                <td><%= link_to "詳細", admin_customer_path(customer), class: "btn btn-primary" %></td>
               </tr>
             <% end %>
           </tbody>
         </table>
+        <%= paginate @customers %>
       <% else %>
         <p>会員情報がありません</p>
       <% end %>

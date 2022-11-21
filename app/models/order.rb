@@ -3,6 +3,8 @@ class Order < ApplicationRecord
   has_many :order_details, dependent: :destroy
   has_many :items, through: :order_details
 
+  scope :ordered_today, -> { where(created_at: Time.current.at_beginning_of_day..Time.current.at_end_of_day) }
+
   enum payment_method: {
     credit_card: 0,
     transfer: 1

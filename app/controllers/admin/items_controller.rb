@@ -5,6 +5,20 @@ class Admin::ItemsController < ApplicationController
     @items = Item.all
   end
 
+  def edit
+    @item = Item.find(params[:id])
+    @genres= Genre.all
+  end
+
+  def update
+    @item = Item.find(params[:id])
+    if @item.update(item_params)
+      redirect_to admin_item_path(@item), notice: "商品の編集に成功しました"
+    else
+      render "edit"
+    end
+  end
+
   def new
     @item = Item.new
     @genres= Genre.all
