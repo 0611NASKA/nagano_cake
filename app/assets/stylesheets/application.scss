@@ -58,7 +58,6 @@ header {
   z-index: 100;
   top: 0;
   left: 0;
-  background-color: #faa;
   * {
     position: relative;
     z-index: 100;
@@ -566,7 +565,7 @@ table.addresses {
   }
 }
 table.orders {
-  thead {	
+  thead {
     tr {
       th {
         width: 100px;
