@@ -8,4 +8,8 @@ class OrderDetail < ApplicationRecord
     production: 2,
     completion: 3
   }
+
+  def subtotal
+    price * amount
+  end
 end

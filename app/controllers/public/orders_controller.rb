@@ -1,11 +1,14 @@
 class Public::OrdersController < ApplicationController
   before_action :authenticate_customer!
-  before_action :correct_cart, except: [:complete]
+  before_action :correct_cart, except: [:index, :show, :complete]
 
   def index
+    @orders = current_customer.orders.includes(:order_details, :items).page(params[:page]).per(5).reverse_order
   end
 
   def show
+    @order = current_customer.orders.find(params[:id])
+    @order_details = @order.order_details.includes(:item)
   end
 
   def new
