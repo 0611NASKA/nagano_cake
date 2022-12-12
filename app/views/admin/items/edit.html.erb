@@ -27,16 +27,16 @@
         <div class="form-group">
           <%= f.label "販売ステータス" %>
           <div>
-            <%= f.radio_button :is_active, class: "form-control" %>
-            <%= f.label :is_active, "販売中", value: true %>
+            <%= f.radio_button :is_active, true, class: "form-control" %>
+            <%= f.label :is_active, "販売中" %>
           <div>
           <div>
-            <%= f.radio_button :is_active, class: "form-control" %>
-            <%= f.label :is_active, "販売停止中", value: false %>
+            <%= f.radio_button :is_active, false, class: "form-control" %>
+            <%= f.label :is_active, "販売停止中" %>
           <div>
         </div>
         <div class="form-group">
-          <%= f.submit "商品登録", class: 'btn btn-success' %>
+          <%= f.submit "商品編集", class: 'btn btn-success' %>
         </div>
       <% end %>
     </div>

@@ -15,7 +15,7 @@ class Admin::OrdersController < ApplicationController
     @order.update(order_params)
     @order_details = @order.order_details
 
-    if @order.status = 1
+    if @order.status == "confirmation"
       @order_details.each do |order_detail|
         order_detail.making_status = 1
         order_detail.save
