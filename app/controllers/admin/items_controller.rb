@@ -34,7 +34,7 @@ class Admin::ItemsController < ApplicationController
     if @item.save
       redirect_to admin_item_path(@item.id), notice: "商品の作成に成功しました"
     else
-      render 'new'
+      redirect_to new_admin_item_path, flash: { error: @item.errors.full_messages }
     end
   end
 

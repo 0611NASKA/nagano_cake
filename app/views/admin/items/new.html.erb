@@ -3,7 +3,16 @@
     <div class="col-sm-12 col-md-8 col-lg-6 px-5 px-sm-0 mx-auto">
       <h2 class="border-bottom">商品新規登録</h2>
       <%= form_with model: @item, url: admin_items_path, method: :post, local:true do |f| %>
-        <%= render 'layouts/errors', obj: @item %>
+        <% if flash[:error].present? %>
+          <div id="error_explanation">
+            <h3><%= flash[:error].count %> 件のエラーがあります</h3>
+            <ul>
+              <% flash[:error].each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
         <div class="form-group">
           <%= f.label "商品画像" %>
           <%= f.file_field :image, class: "form-control-file item_image", accept: 'image/*' %>
@@ -27,13 +36,13 @@
         <div class="form-group">
           <%= f.label "販売ステータス" %>
           <div>
-            <%= f.radio_button :is_active, true, class: "form-control" %>
             <%= f.label :is_active, "販売中" %>
+            <%= f.radio_button :is_active, true, class: "form-control" %>
+          </div>
           <div>
-          <div>
-            <%= f.radio_button :is_active, false, class: "form-control" %>
             <%= f.label :is_active, "販売停止中" %>
-          <div>
+            <%= f.radio_button :is_active, false, class: "form-control" %>
+          </div>
         </div>
         <div class="form-group">
           <%= f.submit "商品登録", class: 'btn btn-success' %>
